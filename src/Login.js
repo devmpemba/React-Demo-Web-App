@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import request from 'superagent';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
   const handleLogin = () => {
-    axios
-      .post('http://localhost:5000/users/login', { username, password })
+    request
+      .post('http://localhost:8000/login')
+      .send({ email, password })
       .then(response => {
-        if (response.data.success) {
+        if (response.body.error === false) {
           setMessage('Login successful');
+          //route
         } else {
           setMessage('Invalid credentials');
         }
@@ -27,9 +29,9 @@ function Login() {
       <h1>Login</h1>
       <input
         type="text"
-        placeholder="Username"
-        value={username}
-        onChange={e => setUsername(e.target.value)}
+        placeholder="Email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
       />
       <input
         type="password"

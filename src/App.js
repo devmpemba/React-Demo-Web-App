@@ -5,6 +5,9 @@ import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import LoginForm from './pages/LoginForm';
 import Register from './pages/Register';
+
+import Login from './Login';
+
 import './App.css';
 
 class App extends Component {
@@ -27,7 +30,7 @@ render() {
 
 		<Routes>
 				<Route exact path='/' element={< Home />}></Route>
-				<Route exact path='/login' element={<LoginForm />}></Route>
+				<Route exact path='/login' element={<Login />}></Route>
 				<Route exact path='/register' element={< Register />}></Route>
 		</Routes>
 		</div>

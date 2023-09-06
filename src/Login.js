@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import request from 'superagent';
 
+import { useHistory } from 'react-router-dom'; // Import useHistory
+
+
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+
+  const history = useHistory(); // Initialize useHistory
+
 
   const handleLogin = () => {
     request
@@ -13,7 +19,9 @@ function Login() {
       .then(response => {
         if (response.body.error === false) {
           setMessage('Login successful');
-          //route
+           // Redirect to the dashboard route
+           history.push('/dashboard');
+
         } else {
           setMessage('Invalid credentials');
         }

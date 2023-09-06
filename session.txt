@@ -1,0 +1,161 @@
+REACT ROUTER DOM
+
+Installation
+
+----------------------
+
+npm install react-router-dom
+
+-----------------------
+
+Usage:
+-------------------------------------
+
+import { useHistory } from 'react-router-dom';
+
+-------------------------------------
+
+const handleLogin = () => {
+    request
+      .post('http://localhost:8000/login')
+      .send({ email, password })
+      .then(response => {
+        if (response.body.error === false) {
+          setMessage('Login successful');
+
+          // Redirect to the dashboard route
+          history.push('/dashboard');
+
+        } else {
+          setMessage('Invalid credentials');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        setMessage('An error occurred during login');
+      });
+  };
+
+  ------------------------------------
+
+  CREATE USER SESSIONS
+
+ Library:
+
+ ----------------------
+
+ npm install express-session
+
+ -----------------------------------
+
+ Usage:
+
+ const session = require('express-session');
+
+-----------------------------------------------
+
+app.use(
+  session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+---------------------------------
+
+///inside login api
+
+ if (/* Authentication successful */) {
+    req.session.userId = /* User's ID from the database */;
+    res.status(200).send('Logged in');
+  } else {
+    res.status(401).send('Authentication failed');
+  }
+});
+
+-----------------------------------
+
+///logout routes
+
+-----------------------
+
+app.post('/logout', (req, res) => {
+  // Destroy the session on logout
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.status(200).send('Logged out');
+    }
+  });
+});
+
+----------------------
+inside Login.js
+
+---------------------
+
+import axios from 'axios';
+
+const login = async (username, password) => {
+  try {
+    const response = await axios.post('http://localhost:5000/login', {
+      username,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const logout = async () => {
+  try {
+    const response = await axios.post('http://localhost:5000/logout');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+------------------------------
+
+import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+-------------------------------------------
+
+const ProtectedRoute = ({ component: Component }) => {
+
+  const history = useHistory();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check the user's login status by making a request to your backend
+    // Update isLoggedIn accordingly
+    // ...
+
+    // Redirect to the login page if not logged in
+    if (!isLoggedIn) {
+      history.push('/login');
+    }
+  }, []);
+
+  return isLoggedIn ? <Component /> : null;
+};
+
+//// USe crypto
+
+const crypto = require('crypto');
+const secretKey = crypto.randomBytes(32).toString('hex');
+console.log(secretKey);
+
+------------------------
+
+
+
+
+
+
